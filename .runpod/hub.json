@@ -16,7 +16,7 @@
         "value": "cinema"
       },
       {
-        "key": "PARALLEL_PROCESSING", 
+        "key": "PARALLEL_PROCESSING",
         "value": "true"
       },
       {
@@ -88,4 +88,4 @@
       }
     }
   }
-} 
+}

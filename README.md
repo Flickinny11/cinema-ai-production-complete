@@ -1,6 +1,6 @@
 # Cinema AI Production Pipeline
 
-[![RunPod](https://img.shields.io/badge/RunPod-Deploy-purple)](https://runpod.io/console/deploy?template=cinema-ai-production-complete&ref=github)
+[![Runpod](https://api.runpod.io/badge/Flickinny11/cinema-ai-production-complete)](https://console.runpod.io/hub/Flickinny11/cinema-ai-production-complete)
 [![GitHub](https://img.shields.io/github/v/release/Flickinny11/cinema-ai-production-complete)](https://github.com/Flickinny11/cinema-ai-production-complete/releases)
 
 Complete production pipeline for cinema-quality AI video generation, ready for RunPod Serverless deployment.

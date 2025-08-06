@@ -32,4 +32,4 @@ models = [
     "facebook/musicgen-large",
     "coqui/XTTS-v2",
     "Qwen/Qwen2.5-32B-Instruct-GGUF"
-] 
+]
