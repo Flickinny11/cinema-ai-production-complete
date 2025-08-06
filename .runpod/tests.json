@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "tests": [
+    {
+      "name": "Health Check",
+      "description": "Test endpoint health",
+      "input": {
+        "type": "health_check"
+      },
+      "expected_output": {
+        "status": "healthy"
+      },
+      "timeout": 30
+    },
+    {
+      "name": "Simple Scene Generation",
+      "description": "Test single scene generation",
+      "input": {
+        "type": "single_scene",
+        "scene": {
+          "id": "test-001",
+          "description": "A spaceship flies through space",
+          "duration": 5,
+          "characters": [],
+          "dialogue": [],
+          "environment": "Outer space with stars",
+          "objects": ["spaceship", "stars"],
+          "camera_movements": ["tracking shot"],
+          "sound_effects": ["engine hum"],
+          "music_mood": "epic"
+        }
+      },
+      "expected_output": {
+        "status": "success"
+      },
+      "timeout": 120
+    },
+    {
+      "name": "Script Processing",
+      "description": "Test script to video pipeline",
+      "input": {
+        "type": "script_to_video",
+        "script": "FADE IN:\n\nINT. LABORATORY - NIGHT\n\nA SCIENTIST works alone.\n\nFADE OUT."
+      },
+      "expected_output": {
+        "status": "success",
+        "total_scenes": 1
+      },
+      "timeout": 300
+    }
+  ],
+  "resources": {
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 1,
+    "cpu": 8,
+    "ram": 32
+  }
+} 

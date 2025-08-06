@@ -1,30 +1,35 @@
 # Cinema AI Production Pipeline
 
-Complete production pipeline for cinema-quality AI video generation.
+[![RunPod](https://img.shields.io/badge/RunPod-Deploy-purple)](https://runpod.io/console/deploy?template=cinema-ai-production-complete&ref=github)
+[![GitHub](https://img.shields.io/github/v/release/Flickinny11/cinema-ai-production-complete)](https://github.com/Flickinny11/cinema-ai-production-complete/releases)
+
+Complete production pipeline for cinema-quality AI video generation, ready for RunPod Serverless deployment.
+
+## Features
+
+- **Video Generation**: HunyuanVideo (65GB VRAM) for cinema quality
+- **Audio**: XTTS-v2 for voice cloning, MusicGen for orchestral scores
+- **Script Processing**: Qwen 2.5 32B for intelligent parsing
+- **Production Ready**: Optimized for H100/A100 80GB GPUs
+
+## Quick Deploy to RunPod
+
+[![Deploy on RunPod](https://img.shields.io/badge/Deploy%20on-RunPod-purple?style=for-the-badge)](https://runpod.io/console/deploy?template=Flickinny11/cinema-ai-production-complete)
 
 ## Architecture
 
-- **Dockerfile**: Container with all dependencies
-- **cinema_pipeline.py**: Main workflow that generates videos
-- **runpod_handler.py**: RunPod serverless handler
-- **download_models.py**: Optional model downloader
+- `cinema_pipeline.py` - Main video generation workflow
+- `runpod_handler.py` - RunPod serverless handler
+- `Dockerfile` - Container configuration
+- `.runpod/hub.json` - RunPod Hub configuration
 
-## Deployment to RunPod
+## Performance
 
-1. Push to GitHub:
-```bash
-git push origin main
-```
-
-2. Create RunPod Template:
-   - Go to RunPod Console > Serverless > Templates
-   - New Template with Dockerfile URL from this repo
-   - Container Disk: 350GB
-
-3. Create Endpoint:
-   - GPU: A100 80GB or H100 80GB
-   - Min Workers: 0 (serverless)
-   - Max Workers: 10
+| Scene Length | Generation Time | GPU Required |
+|--------------|----------------|--------------|
+| 5 seconds | 10-15 seconds | A100 80GB |
+| 30 seconds | 45-60 seconds | A100 80GB |
+| 5 minutes | 5-8 minutes | H100 80GB |
 
 ## API Usage
 
@@ -32,21 +37,44 @@ git push origin main
 import requests
 
 response = requests.post(
-    "https://api.runpod.ai/v2/YOUR_ENDPOINT/runsync",
+    "https://api.runpod.io/v2/YOUR_ENDPOINT/runsync",
     headers={"Authorization": "Bearer YOUR_KEY"},
     json={
         "input": {
             "type": "script_to_video",
-            "script": "Your script here..."
+            "script": "Your movie script here..."
         }
     }
 )
 ```
 
-## Performance
+## Testing
 
-- 5s scene: 10-15 seconds
-- 30s scene: 45-60 seconds
-- Only charged while processing!
+```bash
+# Run local tests
+python test_local.py
 
-## Created by Flickinny11
+# Run RunPod tests
+runpodctl test
+```
+
+## Requirements
+
+- **GPU**: NVIDIA A100 80GB or H100 80GB
+- **VRAM**: 80GB minimum
+- **Disk**: 350GB for models
+- **CUDA**: 12.1+
+
+## Cost
+
+- **Serverless**: $0 when idle
+- **A100 80GB**: $2.49/hour when active
+- **H100 80GB**: $3.99/hour when active
+
+## License
+
+MIT
+
+## Author
+
+Created by @Flickinny11

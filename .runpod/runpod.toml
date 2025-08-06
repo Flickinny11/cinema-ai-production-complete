@@ -1,0 +1,35 @@
+[project]
+name = "cinema-ai-production"
+version = "1.0.0"
+description = "Cinema-quality AI video generation pipeline"
+
+[build]
+base_image = "nvidia/cuda:12.1-devel-ubuntu22.04"
+system_packages = [
+    "python3.10",
+    "python3-pip",
+    "git",
+    "ffmpeg",
+    "wget",
+    "curl"
+]
+
+[requirements]
+python = "3.10"
+cuda = "12.1"
+gpu_capability = "8.0"  # Minimum for A100
+
+[performance]
+enable_tensorrt = false
+enable_xformers = true
+mixed_precision = "fp16"
+
+[models]
+auto_download = false
+cache_dir = "/models/cache"
+models = [
+    "tencent/HunyuanVideo",
+    "facebook/musicgen-large",
+    "coqui/XTTS-v2",
+    "Qwen/Qwen2.5-32B-Instruct-GGUF"
+] 
