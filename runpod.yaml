@@ -1,0 +1,52 @@
+name: cinema-ai-production
+runtime: python:3.10
+gpu: A100-80G
+min_workers: 0
+max_workers: 10
+scaler_type: queue_delay
+scaler_value: 5
+container_disk_size_gb: 350
+
+build:
+  base_image: nvidia/cuda:12.1-devel-ubuntu22.04
+  system_packages:
+    - ffmpeg
+    - git
+    - wget
+    - build-essential
+    - libsndfile1
+  python_packages:
+    - torch==2.2.0+cu121
+    - torchvision
+    - torchaudio
+    - transformers==4.40.0
+    - diffusers==0.27.0
+    - accelerate==0.30.0
+    - xformers==0.0.25.post1
+    - safetensors==0.4.2
+    - audiocraft==1.3.0
+    - TTS==0.22.0
+    - moviepy==1.0.3
+    - opencv-python==4.9.0.80
+    - llama-cpp-python==0.2.60
+    - fastapi==0.111.0
+    - uvicorn==0.30.0
+    - runpod==1.6.0
+    - psutil
+    - GPUtil
+
+run:
+  handler: runpod_handler.handler
+  env:
+    MODEL_QUALITY: cinema
+    PARALLEL_PROCESSING: true
+    CUDA_HOME: /usr/local/cuda
+    TORCH_CUDA_ARCH_LIST: "8.0;8.6;8.9;9.0"
+    PYTORCH_CUDA_ALLOC_CONF: max_split_size_mb:512
+    TORCH_BACKENDS_CUDNN_BENCHMARK: 1
+    HF_HOME: /models/cache
+
+files:
+  - cinema_pipeline.py
+  - runpod_handler.py
+  - download_models.py
