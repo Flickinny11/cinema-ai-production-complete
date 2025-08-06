@@ -10,7 +10,7 @@ def verify_handler():
     """Verify handler script exists and is properly configured"""
     print("🔍 Verifying RunPod Handler Configuration")
     print("=" * 40)
-    
+
     # Check if handler file exists
     handler_file = "runpod_handler.py"
     if os.path.exists(handler_file):
@@ -18,7 +18,7 @@ def verify_handler():
     else:
         print(f"❌ Handler file missing: {handler_file}")
         return False
-    
+
     # Check if handler function exists
     try:
         with open(handler_file, 'r') as f:
@@ -31,7 +31,7 @@ def verify_handler():
     except Exception as e:
         print(f"❌ Error reading handler: {e}")
         return False
-    
+
     # Check hub.json configuration
     hub_file = ".runpod/hub.json"
     if os.path.exists(hub_file):
@@ -39,7 +39,7 @@ def verify_handler():
     else:
         print(f"❌ Hub configuration missing: {hub_file}")
         return False
-    
+
     # Check tests.json
     tests_file = ".runpod/tests.json"
     if os.path.exists(tests_file):
@@ -47,7 +47,7 @@ def verify_handler():
     else:
         print(f"❌ Tests configuration missing: {tests_file}")
         return False
-    
+
     # Check Dockerfile
     dockerfile = "Dockerfile"
     if os.path.exists(dockerfile):
@@ -55,7 +55,7 @@ def verify_handler():
     else:
         print(f"❌ Dockerfile missing: {dockerfile}")
         return False
-    
+
     # Check README badge
     readme_file = "README.md"
     if os.path.exists(readme_file):
@@ -66,7 +66,7 @@ def verify_handler():
             else:
                 print("❌ RunPod badge missing from README")
                 return False
-    
+
     print("\n✅ All RunPod Hub requirements verified!")
     return True
 
@@ -76,4 +76,4 @@ if __name__ == "__main__":
         print("\n🎉 Your project is ready for RunPod Hub!")
     else:
         print("\n❌ Some requirements are missing. Please fix them.")
-        sys.exit(1) 
+        sys.exit(1)
