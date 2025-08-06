@@ -1,26 +1,21 @@
 #!/usr/bin/env python3
 """
-Simple Cinema AI Deployment to RunPod
+Deploy Cinema AI using GitHub repository URL
 """
 
 import requests
-import base64
 import json
 
 API_KEY = "pa_LECM6N2DFP080KTOWB5311INUPHT36EZ2QMRB9P6wyat4e"
+GITHUB_REPO = "https://github.com/Flickinny11/cinema-ai-production-complete"
 
-def create_template():
-    """Create a serverless template"""
-    print("🔧 Creating serverless template...")
+def create_template_from_github():
+    """Create template using GitHub repository"""
+    print("🔧 Creating template from GitHub repository...")
 
-    # Read the Dockerfile
-    with open("Dockerfile", "r") as f:
-        dockerfile = f.read()
-
-    # Create template payload
     payload = {
         "name": "cinema-ai-production",
-        "dockerfile": base64.b64encode(dockerfile.encode()).decode(),
+        "dockerfilePath": f"{GITHUB_REPO}/blob/main/Dockerfile",
         "containerDiskInGb": 350,
         "dockerArgs": {
             "buildArgs": {
@@ -29,17 +24,6 @@ def create_template():
         }
     }
 
-    # Add files to context
-    files = ["cinema_pipeline.py", "runpod_handler.py", "download_models.py"]
-    docker_context = {}
-
-    for file in files:
-        with open(file, "rb") as f:
-            docker_context[file] = base64.b64encode(f.read()).decode()
-
-    payload["dockerContext"] = docker_context
-
-    # Make API request
     response = requests.post(
         "https://api.runpod.io/v2/serverless/template",
         headers={
@@ -95,11 +79,12 @@ def create_endpoint(template_id):
         return None
 
 def main():
-    print("🎬 Deploying Cinema AI to RunPod")
+    print("🎬 Deploying Cinema AI from GitHub")
     print("=" * 40)
+    print(f"Repository: {GITHUB_REPO}")
 
     # Create template
-    template_id = create_template()
+    template_id = create_template_from_github()
     if not template_id:
         return
 
