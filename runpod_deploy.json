@@ -1,0 +1,24 @@
+{
+  "endpoint": {
+    "name": "cinema-ai-production-complete",
+    "templateName": "cinema-ai-production-complete-template",
+    "gpuType": "NVIDIA A100-SXM4-80GB",
+    "gpuCount": 1,
+    "workersMin": 0,
+    "workersMax": 10,
+    "scalerType": "QUEUE_DELAY",
+    "scalerValue": 5,
+    "containerDiskInGb": 350
+  },
+  "template": {
+    "name": "cinema-ai-production-complete-template",
+    "dockerfilePath": "https://raw.githubusercontent.com/Flickinny11/cinema-ai-production-complete/main/Dockerfile",
+    "dockerRegistry": "dockerhub",
+    "containerDiskInGb": 350,
+    "volumeSizeInGb": 0,
+    "env": {
+      "MODEL_QUALITY": "cinema",
+      "PARALLEL_PROCESSING": "true"
+    }
+  }
+}
