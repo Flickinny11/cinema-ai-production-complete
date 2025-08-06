@@ -12,7 +12,7 @@ API_KEY = "pa_LECM6N2DFP080KTOWB5311INUPHT36EZ2QMRB9P6wyat4e"
 def test_health_check(endpoint_id):
     """Test endpoint health check"""
     print(f"🧪 Testing endpoint: {endpoint_id}")
-    
+
     url = f"https://api.runpod.ai/v2/{endpoint_id}/runsync"
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -23,12 +23,12 @@ def test_health_check(endpoint_id):
             "type": "health_check"
         }
     }
-    
+
     try:
         response = requests.post(url, headers=headers, json=data, timeout=60)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text}")
-        
+
         if response.status_code == 200:
             print("✅ Health check successful!")
             return True
@@ -42,7 +42,7 @@ def test_health_check(endpoint_id):
 def test_video_generation(endpoint_id, script):
     """Test video generation"""
     print(f"🎬 Testing video generation: {endpoint_id}")
-    
+
     url = f"https://api.runpod.ai/v2/{endpoint_id}/runsync"
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -54,12 +54,12 @@ def test_video_generation(endpoint_id, script):
             "script": script
         }
     }
-    
+
     try:
         response = requests.post(url, headers=headers, json=data, timeout=300)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text}")
-        
+
         if response.status_code == 200:
             print("✅ Video generation successful!")
             return True
@@ -76,17 +76,17 @@ def main():
         print("Example: python test_endpoint.py abc123")
         print("Example: python test_endpoint.py abc123 'A beautiful sunset over the ocean'")
         return
-    
+
     endpoint_id = sys.argv[1]
     script = sys.argv[2] if len(sys.argv) > 2 else "A beautiful sunset over the ocean"
-    
+
     print("🎬 Cinema AI Endpoint Tester")
     print("=" * 30)
-    
+
     # Test health check
     if test_health_check(endpoint_id):
         print("\n✅ Endpoint is working!")
-        
+
         # Test video generation
         print(f"\n🎬 Testing video generation with script: '{script}'")
         test_video_generation(endpoint_id, script)
@@ -97,4 +97,4 @@ def main():
         print("   • API key is valid")
 
 if __name__ == "__main__":
-    main() 
+    main()

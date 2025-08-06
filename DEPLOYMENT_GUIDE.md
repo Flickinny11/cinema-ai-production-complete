@@ -167,6 +167,6 @@ cinema-ai-production-complete/
 
 ---
 
-**Created by**: Cinema AI Production Pipeline  
-**Repository**: https://github.com/Flickinny11/cinema-ai-production-complete  
-**API Key**: `pa_LECM6N2DFP080KTOWB5311INUPHT36EZ2QMRB9P6wyat4e` 
+**Created by**: Cinema AI Production Pipeline
+**Repository**: https://github.com/Flickinny11/cinema-ai-production-complete
+**API Key**: `pa_LECM6N2DFP080KTOWB5311INUPHT36EZ2QMRB9P6wyat4e`
