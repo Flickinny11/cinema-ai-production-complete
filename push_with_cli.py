@@ -24,16 +24,16 @@ def check_runpod_cli():
 def configure_runpod():
     """Configure RunPod CLI with API key"""
     print("🔐 Configuring RunPod CLI...")
-    
+
     # Set API key
     api_key = "pa_LECM6N2DFP080KTOWB5311INUPHT36EZ2QMRB9P6wyat4e"
-    
+
     try:
         # Configure API key
         result = subprocess.run([
             "runpod", "config", "set", "api_key", api_key
         ], capture_output=True, text=True)
-        
+
         if result.returncode == 0:
             print("✅ API key configured")
             return True
@@ -47,7 +47,7 @@ def configure_runpod():
 def build_and_push():
     """Build and push using RunPod CLI"""
     print("🐳 Building and pushing with RunPod CLI...")
-    
+
     try:
         # Build and push
         result = subprocess.run([
@@ -57,18 +57,18 @@ def build_and_push():
             "--min-workers", "0",
             "--max-workers", "10"
         ], capture_output=True, text=True)
-        
+
         print(f"📡 CLI Output: {result.stdout}")
         if result.stderr:
             print(f"📡 CLI Errors: {result.stderr}")
-        
+
         if result.returncode == 0:
             print("✅ Successfully deployed with CLI!")
             return True
         else:
             print(f"❌ CLI deployment failed: {result.returncode}")
             return False
-            
+
     except Exception as e:
         print(f"❌ Error with CLI deployment: {e}")
         return False
@@ -76,7 +76,7 @@ def build_and_push():
 def create_project_config():
     """Create runpod.toml for CLI deployment"""
     print("📝 Creating RunPod project configuration...")
-    
+
     config = """[project]
 name = "cinema-ai-production-v2"
 base_image = "nvidia/cuda:11.8.0-devel-ubuntu20.04"
@@ -85,7 +85,7 @@ base_image = "nvidia/cuda:11.8.0-devel-ubuntu20.04"
 gpu_required = false
 system_packages = [
     "python3.8",
-    "python3-pip", 
+    "python3-pip",
     "git",
     "ffmpeg",
     "wget",
@@ -128,20 +128,20 @@ handler_file = "runpod_handler.py"
 handler_function = "handler"
 include_files = [
     "cinema_pipeline.py",
-    "runpod_handler.py", 
+    "runpod_handler.py",
     "download_models.py"
 ]
 """
-    
+
     with open("runpod.toml", "w") as f:
         f.write(config)
-    
+
     print("✅ Created runpod.toml")
 
 def main():
     print("🎬 Push to RunPod using CLI")
     print("=" * 40)
-    
+
     # Step 1: Check CLI
     if not check_runpod_cli():
         print("📦 Installing RunPod CLI...")
@@ -149,15 +149,15 @@ def main():
         if not check_runpod_cli():
             print("❌ Cannot proceed without RunPod CLI")
             return
-    
+
     # Step 2: Configure RunPod
     if not configure_runpod():
         print("❌ Cannot proceed without configuration")
         return
-    
+
     # Step 3: Create project config
     create_project_config()
-    
+
     # Step 4: Build and push
     if build_and_push():
         print("\n🎉 Success! Your project is deployed!")
@@ -167,4 +167,4 @@ def main():
         print("🔧 Try manual deployment in RunPod console")
 
 if __name__ == "__main__":
-    main() 
+    main()

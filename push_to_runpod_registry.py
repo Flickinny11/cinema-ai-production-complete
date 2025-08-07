@@ -15,14 +15,14 @@ REGISTRY_URL = "https://registry.runpod.io"
 def login_to_registry():
     """Login to RunPod registry"""
     print("🔐 Logging into RunPod registry...")
-    
+
     # Get registry credentials from RunPod API
     response = requests.post(
         "https://api.runpod.io/v2/user/registry",
         headers={"Authorization": f"Bearer {API_KEY}"},
         json={}
     )
-    
+
     if response.status_code == 200:
         registry_data = response.json()
         print("✅ Got registry credentials")
@@ -34,18 +34,18 @@ def login_to_registry():
 def build_and_push_image():
     """Build and push image to RunPod registry"""
     print("🐳 Building and pushing to RunPod registry...")
-    
+
     # Read Dockerfile
     with open("Dockerfile", "r") as f:
         dockerfile_content = f.read()
-    
+
     # Read Python files
     files = {
         "cinema_pipeline.py": base64.b64encode(open("cinema_pipeline.py", "rb").read()).decode(),
         "runpod_handler.py": base64.b64encode(open("runpod_handler.py", "rb").read()).decode(),
         "download_models.py": base64.b64encode(open("download_models.py", "rb").read()).decode()
     }
-    
+
     # Build payload
     payload = {
         "name": "cinema-ai-production-v2",
@@ -58,12 +58,12 @@ def build_and_push_image():
             }
         }
     }
-    
+
     print("📋 Building image with:")
     print(f"  - Name: {payload['name']}")
     print(f"  - Container Disk: {payload['containerDiskInGb']}GB")
     print(f"  - CUDA Version: {payload['dockerArgs']['buildArgs']['CUDA_VERSION']}")
-    
+
     # Build image
     response = requests.post(
         "https://api.runpod.io/v2/serverless/template",
@@ -73,10 +73,10 @@ def build_and_push_image():
         },
         json=payload
     )
-    
+
     print(f"📡 Build Response Status: {response.status_code}")
     print(f"📡 Build Response: {response.text}")
-    
+
     if response.status_code == 200:
         result = response.json()
         print(f"✅ Image built successfully!")
@@ -89,7 +89,7 @@ def build_and_push_image():
 def create_endpoint_from_registry(template_id):
     """Create endpoint from registry template"""
     print("🚀 Creating endpoint from registry template...")
-    
+
     payload = {
         "name": "cinema-ai-endpoint-v2",
         "templateId": template_id,
@@ -99,7 +99,7 @@ def create_endpoint_from_registry(template_id):
         "scalerType": "QUEUE_DELAY",
         "scalerValue": 5
     }
-    
+
     response = requests.post(
         "https://api.runpod.io/v2/serverless/endpoint",
         headers={
@@ -108,10 +108,10 @@ def create_endpoint_from_registry(template_id):
         },
         json=payload
     )
-    
+
     print(f"📡 Endpoint Response Status: {response.status_code}")
     print(f"📡 Endpoint Response: {response.text}")
-    
+
     if response.status_code == 200:
         result = response.json()
         print(f"✅ Endpoint created successfully!")
@@ -124,16 +124,16 @@ def create_endpoint_from_registry(template_id):
 def trigger_runpod_hub_sync():
     """Trigger RunPod Hub to sync with new release"""
     print("🔄 Triggering RunPod Hub sync...")
-    
+
     # Create a webhook trigger
     webhook_url = "https://api.runpod.io/v2/hub/sync"
-    
+
     payload = {
         "repository": "Flickinny11/cinema-ai-production-complete",
         "branch": "master",
         "trigger": "manual"
     }
-    
+
     response = requests.post(
         webhook_url,
         headers={
@@ -142,7 +142,7 @@ def trigger_runpod_hub_sync():
         },
         json=payload
     )
-    
+
     print(f"📡 Sync Response Status: {response.status_code}")
     if response.status_code == 200:
         print("✅ Sync triggered successfully!")
@@ -152,33 +152,33 @@ def trigger_runpod_hub_sync():
 def main():
     print("🎬 Push to RunPod Registry")
     print("=" * 40)
-    
+
     # Step 1: Login to registry
     registry_data = login_to_registry()
     if not registry_data:
         print("❌ Cannot proceed without registry access")
         return
-    
+
     # Step 2: Build and push image
     template_id = build_and_push_image()
     if not template_id:
         print("❌ Cannot proceed without template")
         return
-    
+
     # Step 3: Create endpoint
     endpoint_id = create_endpoint_from_registry(template_id)
     if endpoint_id:
         print(f"\n🎉 Success! Your endpoint is ready:")
         print(f"🔗 Endpoint ID: {endpoint_id}")
         print(f"🔗 Console: https://console.runpod.io/serverless/{endpoint_id}")
-    
+
     # Step 4: Trigger RunPod Hub sync
     trigger_runpod_hub_sync()
-    
+
     print("\n📋 Next Steps:")
     print("1. Check RunPod Hub: https://console.runpod.io/hub/Flickinny11/cinema-ai-production-complete")
     print("2. Click 'Check for Updates' button")
     print("3. Wait for sync to complete")
 
 if __name__ == "__main__":
-    main() 
+    main()
