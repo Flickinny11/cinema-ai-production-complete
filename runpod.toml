@@ -1,6 +1,6 @@
 [project]
 name = "cinema-ai-production"
-base_image = "nvidia/cuda:12.1-devel-ubuntu22.04"
+base_image = "nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04"
 
 [build]
 gpu_required = false
