@@ -4,9 +4,9 @@ version = "1.0.0"
 description = "Cinema-quality AI video generation pipeline"
 
 [build]
-base_image = "nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04"
+base_image = "nvidia/cuda:12.0.1-devel-ubuntu20.04"
 system_packages = [
-    "python3.10",
+    "python3.8",
     "python3-pip",
     "git",
     "ffmpeg",
@@ -15,7 +15,7 @@ system_packages = [
 ]
 
 [requirements]
-python = "3.10"
+python = "3.8"
 cuda = "12.1"
 gpu_capability = "8.0"  # Minimum for A100
 

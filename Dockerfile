@@ -1,5 +1,5 @@
 # Production Cinema AI Pipeline - H100/A100 80GB Optimized
-FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+FROM nvidia/cuda:12.0.1-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    python3.10 python3-pip git git-lfs wget curl ffmpeg \
+    python3.8 python3-pip git git-lfs wget curl ffmpeg \
     build-essential libsndfile1 && \
     rm -rf /var/lib/apt/lists/*
 

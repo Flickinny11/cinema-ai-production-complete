@@ -8,7 +8,7 @@ scaler_value: 5
 container_disk_size_gb: 350
 
 build:
-  base_image: nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+  base_image: nvidia/cuda:12.0.1-devel-ubuntu20.04
   system_packages:
     - ffmpeg
     - git
