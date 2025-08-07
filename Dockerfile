@@ -4,12 +4,14 @@ FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     CUDA_HOME=/usr/local/cuda \
-    PATH=${CUDA_HOME}/bin:${PATH} \
-    LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH} \
     TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0" \
     PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512 \
     TORCH_BACKENDS_CUDNN_BENCHMARK=1 \
     HF_HOME=/models/cache
+
+# Set PATH and LD_LIBRARY_PATH after CUDA_HOME is defined
+ENV PATH=${CUDA_HOME}/bin:${PATH} \
+    LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
