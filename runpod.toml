@@ -13,7 +13,7 @@ system_packages = [
 ]
 
 python_packages = [
-    "torch==2.2.0+cu121",
+    "torch==2.0.1+cu118",
     "torchvision",
     "torchaudio",
     "transformers==4.40.0",
@@ -42,7 +42,7 @@ scale_value = 5
 container_disk_size_gb = 350
 
 [runtime]
-python_version = "3.10"
+python_version = "3.8"
 handler_file = "runpod_handler.py"
 handler_function = "handler"
 include_files = [

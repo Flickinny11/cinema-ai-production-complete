@@ -47,7 +47,7 @@
   "runtime": {
     "handler": "runpod_handler.py",
     "handler_function": "handler",
-    "python_version": "3.10",
+    "python_version": "3.8",
     "container_start_timeout": 600
   },
   "schema": {

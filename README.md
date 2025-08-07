@@ -63,7 +63,7 @@ runpodctl test
 - **GPU**: NVIDIA A100 80GB or H100 80GB
 - **VRAM**: 80GB minimum
 - **Disk**: 350GB for models
-- **CUDA**: 12.1+
+- **CUDA**: 11.8+
 
 ## Cost
 

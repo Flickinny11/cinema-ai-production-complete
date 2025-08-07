@@ -19,7 +19,7 @@ def create_template_from_github():
         "containerDiskInGb": 350,
         "dockerArgs": {
             "buildArgs": {
-                "CUDA_VERSION": "12.1"
+                "CUDA_VERSION": "11.8"
             }
         }
     }

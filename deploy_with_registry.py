@@ -32,7 +32,7 @@ def create_container_image():
         "containerDiskInGb": 350,
         "dockerArgs": {
             "buildArgs": {
-                "CUDA_VERSION": "12.1"
+                "CUDA_VERSION": "11.8"
             }
         }
     }

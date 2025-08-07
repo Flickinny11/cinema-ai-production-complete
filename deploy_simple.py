@@ -24,7 +24,7 @@ def create_template():
         "containerDiskInGb": 350,
         "dockerArgs": {
             "buildArgs": {
-                "CUDA_VERSION": "12.1"
+                "CUDA_VERSION": "11.8"
             }
         }
     }
