@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "Cinema-quality AI video generation pipeline"
 
 [build]
-base_image = "nvidia/cuda:12.1-devel-ubuntu22.04"
+base_image = "nvidia/cuda:12.1.1-devel-ubuntu22.04"
 system_packages = [
     "python3.10",
     "python3-pip",
