@@ -1,0 +1,97 @@
+# Cinema AI Production Pipeline Requirements
+# August 2025 Edition
+
+# Core PyTorch
+torch==2.3.0
+torchvision==0.18.0
+torchaudio==2.3.0
+xformers==0.0.26.post1
+
+# ML Frameworks
+transformers==4.44.0
+diffusers==0.30.0
+accelerate==0.33.0
+safetensors==0.4.4
+sentencepiece==0.2.0
+protobuf==4.25.3
+
+# Video Generation
+einops==0.8.0
+einops-exts==0.0.4
+scipy==1.13.0
+imageio==2.34.0
+imageio-ffmpeg==0.4.9
+opencv-python==4.10.0.84
+decord==0.6.0
+av==12.3.0
+scikit-video==1.1.11
+
+# Audio Generation & Processing
+audiocraft==1.3.0
+librosa==0.10.2
+soundfile==0.12.1
+pydub==0.25.1
+pyaudio==0.2.14
+audioread==3.0.1
+
+# TTS & Voice
+TTS==0.22.0
+gruut==2.4.0
+phonemizer==3.2.1
+num2words==0.5.13
+inflect==7.2.0
+
+# Hugging Face
+huggingface-hub==0.24.0
+hf-transfer==0.1.6
+datasets==2.20.0
+
+# Video Processing
+moviepy==1.0.3
+ffmpeg-python==0.2.0
+vidgear==0.3.3
+
+# Additional AI Tools
+timm==1.0.7
+omegaconf==2.3.0
+pytorch-lightning==2.3.0
+rotary-embedding-torch==0.5.3
+
+# API & Server
+fastapi==0.111.0
+uvicorn==0.30.0
+runpod==1.6.0
+pydantic==2.8.0
+httpx==0.27.0
+
+# LLM/Script Processing
+openai==1.40.0  # For DeepSeek v3 API
+anthropic==0.31.0  # Optional alternative
+langchain==0.2.0  # For advanced script processing
+tiktoken==0.7.0  # Token counting
+
+# Utilities
+psutil==6.0.0
+GPUtil==1.4.0
+tqdm==4.66.4
+pyyaml==6.0.1
+python-dotenv==1.0.1
+rich==13.7.1
+typer==0.12.3
+
+# Development & Testing
+pytest==8.3.0
+pytest-asyncio==0.23.0
+black==24.4.0
+isort==5.13.0
+flake8==7.1.0
+
+# Optional: Quantization & Optimization
+bitsandbytes==0.43.0
+optimum==1.20.0
+onnxruntime-gpu==1.18.0
+
+# Optional: Additional Models Support
+# stable-audio-tools  # For Stable Audio
+# vall-e-x  # For additional TTS
+# bark  # For additional TTS/audio

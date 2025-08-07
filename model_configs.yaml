@@ -1,0 +1,190 @@
+# Cinema AI Model Configuration
+# August 2025 - Latest Open Source Models
+
+video_models:
+  hunyuan:
+    name: "HunyuanVideo"
+    version: "13B"
+    repo_id: "tencent/HunyuanVideo"
+    capabilities:
+      - "720p video generation"
+      - "Up to 60s duration"
+      - "Cinema quality"
+      - "Facial expressions"
+      - "Camera movements"
+    requirements:
+      min_vram: 65
+      recommended_vram: 80
+    settings:
+      num_inference_steps: 50
+      guidance_scale: 7.5
+      fps: 30
+      max_frames: 1800  # 60s at 30fps
+
+  ltx:
+    name: "LTX-Video"
+    version: "13B"
+    repo_id: "Lightricks/LTX-Video"
+    capabilities:
+      - "Real-time generation"
+      - "30fps video"
+      - "Up to 30s duration"
+      - "Multi-scale rendering"
+      - "30x faster than comparable models"
+    requirements:
+      min_vram: 24
+      recommended_vram: 40
+    settings:
+      num_inference_steps: 8
+      guidance_scale: 6.0
+      fps: 30
+      max_frames: 900  # 30s at 30fps
+
+audio_models:
+  musicgen:
+    name: "MusicGen"
+    version: "Large"
+    repo_id: "facebook/musicgen-large"
+    capabilities:
+      - "Orchestral music"
+      - "Melody conditioning"
+      - "Long-form generation"
+      - "Multi-genre"
+    settings:
+      sample_rate: 32000
+      duration: 30
+      temperature: 0.8
+      top_k: 250
+      top_p: 0.95
+      cfg_coef: 3.0
+
+  audiogen:
+    name: "AudioGen"
+    version: "Medium"
+    repo_id: "facebook/audiogen-medium"
+    capabilities:
+      - "Sound effects"
+      - "Environmental sounds"
+      - "Foley generation"
+    settings:
+      sample_rate: 16000
+      duration: 10
+      temperature: 0.85
+
+  stable_audio:
+    name: "Stable Audio Open"
+    repo_id: "stabilityai/stable-audio-open-1.0"
+    capabilities:
+      - "47s generation"
+      - "Production elements"
+      - "Style transfer"
+    settings:
+      sample_rate: 44100
+      duration: 47
+
+tts_models:
+  xtts:
+    name: "XTTS-v2"
+    repo_id: "coqui/XTTS-v2"
+    capabilities:
+      - "Voice cloning (6s sample)"
+      - "17 languages"
+      - "Emotion transfer"
+      - "Cross-language cloning"
+    languages:
+      - "en"
+      - "es"
+      - "fr"
+      - "de"
+      - "it"
+      - "pt"
+      - "pl"
+      - "tr"
+      - "ru"
+      - "nl"
+      - "cs"
+      - "ar"
+      - "zh-cn"
+      - "ja"
+      - "hu"
+      - "ko"
+      - "hi"
+    settings:
+      sample_rate: 24000
+      min_speaker_wav_duration: 6
+
+special_models:
+  foleycrafter:
+    name: "FoleyCrafter"
+    repo_id: "auffusion/foleycrafter"
+    capabilities:
+      - "Video-to-audio synthesis"
+      - "Synchronized foley"
+      - "Temporal alignment"
+    settings:
+      sample_rate: 16000
+
+  emo:
+    name: "EMO (Emote Portrait Alive)"
+    repo_id: "alibaba/EMO"  # When available
+    capabilities:
+      - "Facial animation"
+      - "Lip sync"
+      - "Expression generation"
+      - "Audio-driven animation"
+    status: "Coming soon"
+
+pipeline_settings:
+  cinema_mode:
+    description: "Full quality for H100/A100 80GB"
+    min_vram: 80
+    models:
+      - hunyuan
+      - ltx
+      - musicgen
+      - audiogen
+      - xtts
+    parallel_processing: true
+    max_duration: 60
+    max_resolution: "4k"
+
+  balanced_mode:
+    description: "Optimized for A100 40GB"
+    min_vram: 40
+    models:
+      - ltx
+      - musicgen
+      - xtts
+    parallel_processing: false
+    max_duration: 30
+    max_resolution: "1080p"
+
+  fast_mode:
+    description: "Consumer GPU optimized"
+    min_vram: 24
+    models:
+      - ltx
+      - stable_audio
+      - xtts
+    parallel_processing: false
+    max_duration: 15
+    max_resolution: "720p"
+
+performance_metrics:
+  hunyuan:
+    5s_video_720p: "45-60s generation time"
+    30s_video_720p: "4-6 minutes"
+    vram_usage: "65-75GB"
+
+  ltx:
+    5s_video_720p: "2s generation time"
+    30s_video_720p: "15-20s"
+    vram_usage: "20-30GB"
+
+  musicgen:
+    30s_music: "10-15s generation"
+    vram_usage: "8-12GB"
+
+  xtts:
+    voice_cloning: "2-3s per sentence"
+    vram_usage: "4-6GB"

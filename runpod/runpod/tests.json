@@ -1,0 +1,200 @@
+{
+    "version": "1.0.0",
+    "tests": [
+      {
+        "name": "Health Check",
+        "description": "Test endpoint health and model availability",
+        "input": {
+          "type": "health_check"
+        },
+        "expected_output": {
+          "status": "healthy",
+          "models_loaded": ["ltx", "musicgen", "audiogen", "tts", "deepseek"],
+          "capabilities": {
+            "max_duration": 60,
+            "voice_cloning": true,
+            "music_generation": true,
+            "sound_effects": true,
+            "human_sounds": true,
+            "script_processing": true
+          }
+        },
+        "timeout": 30
+      },
+      {
+        "name": "Simple Scene Generation",
+        "description": "Test single scene video generation",
+        "input": {
+          "type": "single_scene",
+          "scene": {
+            "id": "test-001",
+            "description": "A robot walks through a futuristic city at night, neon lights reflecting off wet streets",
+            "duration": 5,
+            "resolution": "720p",
+            "fps": 30,
+            "camera_movements": ["tracking shot", "slow zoom"],
+            "sound_effects": ["footsteps", "city ambience", "rain"],
+            "music_mood": "cyberpunk ambient"
+          }
+        },
+        "expected_output": {
+          "status": "success",
+          "videos": ["*"],
+          "processing_time": "*"
+        },
+        "timeout": 120
+      },
+      {
+        "name": "Dialogue with Human Sounds",
+        "description": "Test dialogue generation with non-verbal human sounds",
+        "input": {
+          "type": "single_scene",
+          "scene": {
+            "id": "test-002",
+            "description": "Two friends having coffee, one tells a funny story",
+            "duration": 10,
+            "dialogue": [
+              {
+                "character": "Alex",
+                "text": "You won't believe what happened yesterday!",
+                "emotion": "excited"
+              },
+              {
+                "character": "Sam",
+                "text": "[laughs] Oh no, what did you do this time?",
+                "emotion": "amused"
+              },
+              {
+                "character": "Alex",
+                "text": "I accidentally sent the email to the entire company! [groans]",
+                "emotion": "embarrassed"
+              }
+            ],
+            "human_sounds": ["laughter", "sigh", "groan"],
+            "environment": "Coffee shop"
+          },
+          "options": {
+            "enable_human_sounds": true
+          }
+        },
+        "expected_output": {
+          "status": "success"
+        },
+        "timeout": 180
+      },
+      {
+        "name": "Script Processing",
+        "description": "Test script to video pipeline with DeepSeek",
+        "input": {
+          "type": "script_to_video",
+          "script": "FADE IN:\n\nINT. SPACESHIP BRIDGE - DAY\n\nCAPTAIN REYNOLDS (40s, weathered) stands at the helm.\n\nREYNOLDS\n(determined)\nSet course for the asteroid field. We're going in.\n\nThe crew exchanges worried glances.\n\nFADE OUT.",
+          "options": {
+            "resolution": "720p",
+            "max_scene_duration": 15
+          }
+        },
+        "expected_output": {
+          "status": "success",
+          "script": {
+            "total_scenes": 1,
+            "scenes": ["*"]
+          }
+        },
+        "timeout": 300
+      },
+      {
+        "name": "Concept to Script",
+        "description": "Test concept development into full script",
+        "input": {
+          "type": "concept_to_script",
+          "concept": "A heartwarming story about a lonely robot who discovers the meaning of friendship",
+          "options": {
+            "script_type": "short_film",
+            "target_duration": 60,
+            "max_scene_duration": 10
+          }
+        },
+        "expected_output": {
+          "status": "success",
+          "script": {
+            "title": "*",
+            "total_scenes": "*",
+            "estimated_duration": "*"
+          }
+        },
+        "timeout": 120
+      },
+      {
+        "name": "Batch Scene Processing",
+        "description": "Test multiple scene generation",
+        "input": {
+          "type": "batch_scenes",
+          "scenes": [
+            {
+              "id": "batch-001",
+              "description": "Sunrise over mountains",
+              "duration": 5
+            },
+            {
+              "id": "batch-002",
+              "description": "Waves crashing on beach",
+              "duration": 5
+            }
+          ]
+        },
+        "expected_output": {
+          "status": "success",
+          "videos": ["*", "*"]
+        },
+        "timeout": 240
+      },
+      {
+        "name": "Voice Cloning Test",
+        "description": "Test voice cloning with 6-second sample",
+        "input": {
+          "type": "single_scene",
+          "scene": {
+            "id": "voice-test",
+            "description": "Character speaking with cloned voice",
+            "duration": 5,
+            "dialogue": [
+              {
+                "character": "Narrator",
+                "text": "This is a test of the voice cloning system.",
+                "voice_sample": "base64_encoded_6s_audio_sample"
+              }
+            ]
+          }
+        },
+        "expected_output": {
+          "status": "success"
+        },
+        "timeout": 60
+      }
+    ],
+    "resources": {
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "gpu_count": 1,
+      "cpu": 16,
+      "ram": 64,
+      "disk": 350
+    },
+    "performance_benchmarks": {
+      "5s_video_720p": {
+        "expected_time": "2-10s",
+        "max_time": 30
+      },
+      "30s_video_720p": {
+        "expected_time": "45-90s",
+        "max_time": 180
+      },
+      "voice_cloning": {
+        "expected_time": "2-3s per sentence",
+        "max_time": 10
+      },
+      "script_processing": {
+        "expected_time": "5-10s",
+        "max_time": 30
+      }
+    }
+  }

@@ -1,0 +1,222 @@
+{
+    "version": "2.0.0",
+    "name": "Cinema AI Production Pipeline",
+    "description": "Cinema-quality AI video generation with HunyuanVideo, LTX-Video, MusicGen, AudioGen, XTTS-v2, and DeepSeek v3 script processing. Creates videos with realistic facial expressions, emotions, dialogue, sound effects, and non-verbal human sounds.",
+    "author": "Flickinny11",
+    "git_url": "https://github.com/Flickinny11/cinema-ai-production-complete",
+    "image_name": "cinema-ai-production-v2",
+    "category": "AI/ML",
+    "keywords": [
+      "video-generation",
+      "hunyuan",
+      "ltx-video",
+      "musicgen",
+      "audiogen",
+      "xtts",
+      "deepseek",
+      "text-to-video",
+      "voice-cloning",
+      "lip-sync"
+    ],
+    "build": {
+      "base_image": "nvidia/cuda:12.1.0-devel-ubuntu22.04",
+      "dockerfile_path": "Dockerfile",
+      "system_packages": [
+        "python3.10",
+        "python3.10-dev",
+        "python3-pip",
+        "git",
+        "git-lfs",
+        "ffmpeg",
+        "wget",
+        "curl",
+        "build-essential",
+        "libsndfile1",
+        "libportaudio2",
+        "sox"
+      ],
+      "python_packages": [
+        "torch==2.3.0",
+        "torchvision==0.18.0",
+        "torchaudio==2.3.0",
+        "transformers==4.44.0",
+        "diffusers==0.30.0",
+        "accelerate==0.33.0",
+        "xformers==0.0.26.post1",
+        "audiocraft==1.3.0",
+        "TTS==0.22.0",
+        "moviepy==1.0.3",
+        "runpod==1.6.0",
+        "openai==1.40.0",
+        "anthropic==0.31.0",
+        "langchain==0.2.0"
+      ]
+    },
+    "template": {
+      "name": "cinema-ai-production-v2",
+      "container_disk_in_gb": 350,
+      "volume_in_gb": 100,
+      "volume_mount_path": "/models",
+      "container_registry_auth_id": null,
+      "dockerfile_path": "Dockerfile",
+      "env": [
+        {
+          "key": "MODEL_QUALITY",
+          "value": "cinema",
+          "description": "Quality mode: cinema, balanced, or fast"
+        },
+        {
+          "key": "PARALLEL_PROCESSING",
+          "value": "true",
+          "description": "Enable parallel video/audio generation"
+        },
+        {
+          "key": "HF_HOME",
+          "value": "/models/cache",
+          "description": "Hugging Face cache directory"
+        },
+        {
+          "key": "DEEPSEEK_API_KEY",
+          "value": "",
+          "description": "DeepSeek v3 API key for script processing"
+        },
+        {
+          "key": "ENABLE_HUMAN_SOUNDS",
+          "value": "true",
+          "description": "Enable non-verbal human sound generation"
+        },
+        {
+          "key": "MAX_VIDEO_DURATION",
+          "value": "60",
+          "description": "Maximum video duration in seconds"
+        }
+      ],
+      "docker_args": "--gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864",
+      "is_public": true
+    },
+    "serverless": {
+      "scaled_settings": {
+        "min_workers": 0,
+        "max_workers": 10,
+        "scale_type": "QUEUE_DELAY",
+        "scale_value": 30,
+        "idle_timeout": 300
+      },
+      "gpu_types": [
+        "NVIDIA A100-SXM4-80GB",
+        "NVIDIA H100 80GB HBM3",
+        "NVIDIA A100 80GB PCIe",
+        "NVIDIA A40"
+      ],
+      "supported_input_types": [
+        "script_to_video",
+        "concept_to_script",
+        "single_scene",
+        "batch_scenes",
+        "health_check",
+        "list_models"
+      ]
+    },
+    "runtime": {
+      "handler": "runpod_handler.py",
+      "handler_function": "handler",
+      "python_version": "3.10",
+      "container_start_timeout": 600,
+      "include_files": [
+        "cinema_pipeline.py",
+        "script_processor.py",
+        "human_sounds.py",
+        "model_configs.yaml"
+      ]
+    },
+    "schema": {
+      "input": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["script_to_video", "concept_to_script", "single_scene", "batch_scenes", "health_check"],
+            "description": "Type of generation request"
+          },
+          "script": {
+            "type": "string",
+            "description": "Movie/episode script to process"
+          },
+          "concept": {
+            "type": "string",
+            "description": "Concept to develop into full script"
+          },
+          "scene": {
+            "type": "object",
+            "description": "Single scene configuration"
+          },
+          "scenes": {
+            "type": "array",
+            "description": "Multiple scenes for batch processing"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "resolution": {
+                "type": "string",
+                "enum": ["480p", "720p", "1080p", "4k"],
+                "default": "720p"
+              },
+              "fps": {
+                "type": "integer",
+                "enum": [24, 30, 60],
+                "default": 30
+              },
+              "max_scene_duration": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 60,
+                "default": 30
+              },
+              "enable_human_sounds": {
+                "type": "boolean",
+                "default": true
+              },
+              "voice_clone_samples": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": ["type"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Success, error, or processing"
+          },
+          "videos": {
+            "type": "array",
+            "description": "Generated video URLs/paths"
+          },
+          "script": {
+            "type": "object",
+            "description": "Processed script with scenes"
+          },
+          "processing_time": {
+            "type": "number",
+            "description": "Total processing time in seconds"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if failed"
+          }
+        }
+      }
+    },
+    "health_check": {
+      "endpoint": "/health",
+      "timeout": 30,
+      "expected_status": 200
+    }
+  }
