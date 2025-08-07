@@ -1,5 +1,5 @@
 # Production Cinema AI Pipeline - H100/A100 80GB Optimized
-FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
+FROM nvidia/cuda:12.0.1-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
@@ -21,7 +21,7 @@ WORKDIR /app
 
 # Install Python packages
 RUN pip3 install --no-cache-dir \
-    torch==2.0.1+cu118 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 \
+    torch==2.2.0+cu121 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     transformers==4.40.0 diffusers==0.27.0 accelerate==0.30.0 \
     xformers==0.0.25.post1 safetensors==0.4.2 \
     audiocraft==1.3.0 TTS==0.22.0 \
@@ -33,10 +33,13 @@ RUN pip3 install --no-cache-dir \
 # Create directories
 RUN mkdir -p /models /app/output /app/temp
 
-# Copy Python files
+# Copy Python files (we'll create these next)
 COPY cinema_pipeline.py /app/
 COPY runpod_handler.py /app/
 COPY download_models.py /app/
+
+# Download models during build (optional - can skip for faster builds)
+# RUN python3 /app/download_models.py
 
 WORKDIR /app
 ENTRYPOINT ["python3", "-u", "runpod_handler.py"]
